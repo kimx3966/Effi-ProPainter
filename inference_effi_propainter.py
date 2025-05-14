@@ -368,9 +368,11 @@ if __name__ == '__main__':
             pred_flows_bi = (pred_flows_f, pred_flows_b)
 
         else:
-            pred_flows_bi, _ = fix_flow_complete.forward_bidirect_flow(gt_flows_bi, flow_masks)
-            pred_flows_bi = fix_flow_complete.combine_flow(gt_flows_bi, pred_flows_bi, flow_masks)
-            pred_flows_bi = pred_flows_bi.cpu()
+            # gt_flows_bi = (gt_flows_bi[0].to(device), gt_flows_bi[1].to(device))
+            pred_flows_bi, _ = fix_flow_complete.forward_bidirect_flow((gt_flows_bi[0].to(device), gt_flows_bi[1].to(device)), flow_masks.to(device))
+            torch.cuda.empty_cache()
+            pred_flows_bi = fix_flow_complete.combine_flow((gt_flows_bi[0].to(device), gt_flows_bi[1].to(device)), pred_flows_bi, flow_masks.to(device))
+            pred_flows_bi = (pred_flows_bi[0].cpu(), pred_flows_bi[1].cpu()) 
             torch.cuda.empty_cache()
             
 
