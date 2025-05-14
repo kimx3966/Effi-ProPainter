@@ -2,6 +2,7 @@
 Effi-ProPainter is an optimized version of the original ProPainter, enhancing GPU VRAM efficiency and enabling inference at higher parameter settings without encountering out-of-memory (OOM) issues. Effi-ProPainter uses only approximately 53% of the peak GPU VRAM consumption compared to the original ProPainter.
 
 ## Installation
+The basic setup and installation procedures are identical to those of the original [ProPainter](https://github.com/sczhou/ProPainter).
 
 1. Clone Repo
 
