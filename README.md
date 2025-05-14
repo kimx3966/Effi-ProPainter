@@ -28,7 +28,6 @@ The basic setup and installation procedures are identical to those of the origin
 
 
 ## Inference
-We provide some examples in the [`inputs`](./inputs) folder. 
 Run the following commands to try it out:
 ```shell
 # The first example (object removal)
