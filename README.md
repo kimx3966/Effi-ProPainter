@@ -1,5 +1,5 @@
 # Effi-ProPainter
-Effi-ProPainter is an optimized version of the original ProPainter, enhancing GPU VRAM efficiency and enabling inference at higher parameter settings without encountering out-of-memory (OOM) issues.
+Effi-ProPainter is an optimized version of the original ProPainter, enhancing GPU VRAM efficiency and enabling inference at higher parameter settings without encountering out-of-memory (OOM) issues. Effi-ProPainter uses only approximately 53% of the peak GPU VRAM consumption compared to the original ProPainter.
 
 ## Installation
 
@@ -36,8 +36,8 @@ python inference_effi_propainter.py --video inputs/object_removal/bmx-trees --ma
 python inference_effi_propainter.py --video inputs/video_completion/running_car.mp4 --mask inputs/video_completion/mask_square.png --height 240 --width 432
 ```
 
-# License
+## License
 Please be aware that ProPainter is governed by the non-commercial [S-Lab license](https://github.com/sczhou/ProPainter/blob/main/LICENSE).
 
-# Acknowledgement
+## Acknowledgement
 This implementation is built upon [ProPainter](https://github.com/sczhou/ProPainter). Huge thanks to the original authors for their impressive contribution!
