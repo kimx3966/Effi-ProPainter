@@ -36,6 +36,17 @@ python inference_effi_propainter.py --video inputs/object_removal/bmx-trees --ma
 python inference_effi_propainter.py --video inputs/video_completion/running_car.mp4 --mask inputs/video_completion/mask_square.png --height 240 --width 432
 ```
 
+## Further Optimized Memory-efficient Inference
+The following options provide additional ways to reduce GPU VRAM usage. Unless stated otherwise, the content below is identical to the original [ProPainter](https://github.com/sczhou/ProPainter):
+
+   - Reduce the number of local neighbors through decreasing the `--neighbor_length` (default 10).
+   - Reduce the number of global references by increasing the `--ref_stride` (default 10).
+   - Set the `--resize_ratio` (default 1.0) to resize the processing video.
+   - Set a smaller video size via specifying the `--width` and `--height`.
+   - Set `--fp16` to use fp16 (half precision) during inference.
+   - Reduce the frames of sub-videos `--subvideo_length` (default 80), which effectively decouples GPU memory costs and video length.
+
+
 ## License
 Please be aware that ProPainter is governed by the non-commercial [S-Lab license](https://github.com/sczhou/ProPainter/blob/main/LICENSE).
 
