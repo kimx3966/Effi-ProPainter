@@ -316,18 +316,6 @@ class InpaintGenerator(BaseNetwork):
         _, _, prop_frames, updated_masks = self.img_prop_module(masked_frames, completed_flows[0], completed_flows[1], masks, interpolation)
         return prop_frames, updated_masks
 
-    def flow_interpolate(self, completed_sub_flows, b, ori_h, ori_w, l_t):
-        batch_results = []
-        for i in range(l_t-1):
-            temp = F.interpolate(
-                completed_sub_flows[:, i].view(b, 2, ori_h, ori_w),
-                scale_factor=1/4, mode='bilinear', align_corners=False
-            ).unsqueeze(1) / 4.0
-            batch_results.append(temp.cpu())
-            del temp
-            torch.cuda.empty_cache()
-
-        return torch.cat(batch_results, dim=1).to(completed_sub_flows.device)
 
     def forward(self, masked_frames, completed_flows, masks_in, masks_updated, num_local_frames, interpolation='bilinear', t_dilation=2):
         """
@@ -348,12 +336,11 @@ class InpaintGenerator(BaseNetwork):
         ref_feat = enc_feat.view(b, t, c, h, w)[:, l_t:, ...]
         fold_feat_size = (h, w)
 
-        ds_flows_f = self.flow_interpolate(completed_flows[0], b, ori_h, ori_w, l_t)
-        ds_flows_b = self.flow_interpolate(completed_flows[1], b, ori_h, ori_w, l_t)
+        ds_flows_f = F.interpolate(completed_flows[0].view(-1, 2, ori_h, ori_w), scale_factor=1/4, mode='bilinear', align_corners=False).view(b, l_t-1, 2, h, w)/4.0
+        ds_flows_b = F.interpolate(completed_flows[1].view(-1, 2, ori_h, ori_w), scale_factor=1/4, mode='bilinear', align_corners=False).view(b, l_t-1, 2, h, w)/4.0
         ds_mask_in = F.interpolate(masks_in.reshape(-1, 1, ori_h, ori_w), scale_factor=1/4, mode='nearest').view(b, t, 1, h, w)
         ds_mask_in_local = ds_mask_in[:, :l_t]
         ds_mask_updated_local =  F.interpolate(masks_updated[:,:l_t].reshape(-1, 1, ori_h, ori_w), scale_factor=1/4, mode='nearest').view(b, l_t, 1, h, w)
-
 
         if self.training:
             mask_pool_l = self.max_pool(ds_mask_in.view(-1, 1, h, w))
